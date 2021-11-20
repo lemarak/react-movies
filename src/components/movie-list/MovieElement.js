@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class MovieElement extends Component {
   mouseEnter = () => {
-    this.props.updateSelectedMovie(this.props.movie.title);
+    this.props.updateSelectedMovie();
   };
   render() {
     return (

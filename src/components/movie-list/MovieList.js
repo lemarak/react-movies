@@ -3,24 +3,18 @@ import MovieElement from "./MovieElement";
 
 export default class MovieList extends Component {
   render() {
+    const displayMovies = this.props.movies.map((movie, index) => {
+      return (
+        <MovieElement
+          movie={movie}
+          key={movie.title}
+          updateSelectedMovie={() => this.props.updateSelectedMovie(index)}
+        />
+      );
+    });
     return (
       <div className="w-75 d-flex flex-row flex-wrap align-content-start">
-        <MovieElement
-          movie={this.props.movies[0]}
-          updateSelectedMovie={this.props.updateSelectedMovie}
-        />
-        <MovieElement
-          movie={this.props.movies[1]}
-          updateSelectedMovie={this.props.updateSelectedMovie}
-        />
-        <MovieElement
-          movie={this.props.movies[2]}
-          updateSelectedMovie={this.props.updateSelectedMovie}
-        />
-        <MovieElement
-          movie={this.props.movies[3]}
-          updateSelectedMovie={this.props.updateSelectedMovie}
-        />
+        {displayMovies}
       </div>
     );
   }
