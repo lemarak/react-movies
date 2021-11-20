@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MovieElement from "./MovieElement";
+import MovieElement from "./MovieElement/MovieElement";
 
 export default class MovieList extends Component {
   render() {
@@ -7,7 +7,7 @@ export default class MovieList extends Component {
       return (
         <MovieElement
           movie={movie}
-          key={movie.title}
+          key={movie.title + index}
           updateSelectedMovie={() => this.props.updateSelectedMovie(index)}
         />
       );
