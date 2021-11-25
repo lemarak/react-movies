@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import apiMovie from "./conf/axios-conf";
+
 import { Header, MovieList, MovieDetails, Loading } from "./components";
 import dataMovies from "./data";
+
+require("dotenv").config();
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +21,15 @@ class App extends Component {
         isLoading: false,
       });
     }, 300);
+  }
+
+  componentDidMount() {
+    apiMovie
+      .get("/discover/movie")
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((err) => console.log(err));
   }
 
   updateSelectedMovie = (index) => {
