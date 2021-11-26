@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import apiMovie from "./conf/axios-conf";
 
-import { Header, MovieList, MovieDetails, Loading } from "./components";
-import dataMovies from "./data";
+import {
+  Header,
+  MovieList,
+  MovieDetails,
+  Loading,
+  SearchBar,
+} from "./components";
 
 require("dotenv").config();
 
@@ -14,20 +19,20 @@ class App extends Component {
       selectedMovie: 0,
       isLoading: true,
     };
-
-    setTimeout(() => {
-      this.setState({
-        movies: dataMovies,
-        isLoading: false,
-      });
-    }, 300);
   }
 
   componentDidMount() {
     apiMovie
       .get("/discover/movie")
-      .then((response) => {
-        console.log(response.data);
+      .then((response) => response.data.results)
+      .then((moviesApi) => {
+        const movies = moviesApi.map((movie) => ({
+          img: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+          title: movie.title,
+          details: `${movie.release_date} | ${movie.vote_average}/10 | ${movie.vote_count}`,
+          description: movie.overview,
+        }));
+        this.updateMovies(movies);
       })
       .catch((err) => console.log(err));
   }
@@ -35,10 +40,20 @@ class App extends Component {
   updateSelectedMovie = (index) => {
     this.setState({ selectedMovie: index });
   };
+
+  updateMovies(movies) {
+    this.setState({
+      movies,
+      isLoading: false,
+    });
+  }
+
+  // render
   render() {
     return (
       <div className="App d-flex flex-column">
         <Header />
+        <SearchBar updateMovies={this.updateMovies} />
         {this.state.isLoading ? (
           <Loading />
         ) : (
