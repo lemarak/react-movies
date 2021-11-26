@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import apiMovie from "./conf/axios-conf";
+import apiMovie, { apiMovieMap } from "./conf/axios-conf";
 
 import {
   Header,
@@ -26,12 +26,7 @@ class App extends Component {
       .get("/discover/movie")
       .then((response) => response.data.results)
       .then((moviesApi) => {
-        const movies = moviesApi.map((movie) => ({
-          img: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-          title: movie.title,
-          details: `${movie.release_date} | ${movie.vote_average}/10 | ${movie.vote_count}`,
-          description: movie.overview,
-        }));
+        const movies = moviesApi.map(apiMovieMap);
         this.updateMovies(movies);
       })
       .catch((err) => console.log(err));
@@ -41,12 +36,12 @@ class App extends Component {
     this.setState({ selectedMovie: index });
   };
 
-  updateMovies(movies) {
+  updateMovies = (movies) => {
     this.setState({
       movies,
       isLoading: false,
     });
-  }
+  };
 
   // render
   render() {
