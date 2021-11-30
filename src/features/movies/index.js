@@ -1,4 +1,3 @@
-import React from "react";
 import { MovieList, MovieDetails, SearchBar } from "./components";
 import Loading from "../../components/utils/Loading";
 

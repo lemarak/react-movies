@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import apiMovie, { apiMovieMap } from "./conf/axios-conf";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 
+import apiMovie, { apiMovieMap } from "./conf/axios-conf";
 import { Header } from "./components";
 import Movies from "./features/movies";
+import Favorites from "./features/favorites";
 
 require("dotenv").config();
 
@@ -41,16 +48,30 @@ class App extends Component {
   // render
   render() {
     return (
-      <div className="App d-flex flex-column">
-        <Header />
-        <Movies
-          isLoading={this.state.isLoading}
-          updateMovies={this.updateMovies}
-          updateSelectedMovie={this.updateSelectedMovie}
-          selectedMovie={this.state.selectedMovie}
-          movies={this.state.movies}
-        />
-      </div>
+      <Router>
+        <div className="App d-flex flex-column">
+          <Header />
+          <Switch>
+            <Route
+              path="/movies"
+              render={(props) => {
+                return (
+                  <Movies
+                    {...props}
+                    isLoading={this.state.isLoading}
+                    updateMovies={this.updateMovies}
+                    updateSelectedMovie={this.updateSelectedMovie}
+                    selectedMovie={this.state.selectedMovie}
+                    movies={this.state.movies}
+                  />
+                );
+              }}
+            />
+            <Route path="/favorites" component={Favorites} />
+            <Redirect to="/movies" />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
