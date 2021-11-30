@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { Formik } from "formik";
-import apiMovie, { apiMovieMap } from "../../conf/axios-conf";
+import apiMovie, { apiMovieMap } from "../../../../conf/axios-conf";
 
 export default class SearchBar extends Component {
   submit = (values, actions) => {

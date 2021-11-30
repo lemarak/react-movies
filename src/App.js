@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import apiMovie, { apiMovieMap } from "./conf/axios-conf";
 
-import {
-  Header,
-  MovieList,
-  MovieDetails,
-  Loading,
-  SearchBar,
-} from "./components";
+import { Header } from "./components";
+import Movies from "./features/movies";
 
 require("dotenv").config();
 
@@ -48,18 +43,13 @@ class App extends Component {
     return (
       <div className="App d-flex flex-column">
         <Header />
-        <SearchBar updateMovies={this.updateMovies} />
-        {this.state.isLoading ? (
-          <Loading />
-        ) : (
-          <div className="d-flex flex-row flex-fill pt-4 p-2">
-            <MovieList
-              movies={this.state.movies}
-              updateSelectedMovie={this.updateSelectedMovie}
-            />
-            <MovieDetails movie={this.state.movies[this.state.selectedMovie]} />
-          </div>
-        )}
+        <Movies
+          isLoading={this.state.isLoading}
+          updateMovies={this.updateMovies}
+          updateSelectedMovie={this.updateSelectedMovie}
+          selectedMovie={this.state.selectedMovie}
+          movies={this.state.movies}
+        />
       </div>
     );
   }

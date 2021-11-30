@@ -8,7 +8,7 @@ export default class MovieElement extends Component {
   render() {
     return (
       <div
-        onMouseEnter={this.mouseEnter}
+        onClick={this.mouseEnter}
         className={"d-flex flex-row bg-light " + Style.container}
       >
         <img alt="film" width="185" src={this.props.movie.img} />
