@@ -9,6 +9,9 @@ export default class MovieList extends Component {
           movie={movie}
           key={movie.title + index}
           updateSelectedMovie={() => this.props.updateSelectedMovie(index)}
+          isFavorite={this.props.favorites.includes(movie.title)}
+          addFavorite={this.props.addFavorite}
+          removeFavorite={this.props.removeFavorite}
         />
       );
     });

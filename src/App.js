@@ -20,6 +20,7 @@ class App extends Component {
       movies: null,
       selectedMovie: 0,
       isLoading: true,
+      favorites: [],
     };
   }
 
@@ -45,6 +46,22 @@ class App extends Component {
     });
   };
 
+  addFavorite = (title) => {
+    const favorites = [...this.state.favorites];
+    const film = this.state.movies.find((movie) => movie.title === title);
+    favorites.push(film);
+    this.setState({ favorites });
+  };
+
+  removeFavorite = (title) => {
+    const favorites = [...this.state.favorites];
+    const index = this.state.favorites.findIndex(
+      (movie) => movie.title === title
+    );
+    favorites.splice(index, 1);
+    this.setState({ favorites });
+  };
+
   // render
   render() {
     return (
@@ -63,6 +80,9 @@ class App extends Component {
                     updateSelectedMovie={this.updateSelectedMovie}
                     selectedMovie={this.state.selectedMovie}
                     movies={this.state.movies}
+                    addFavorite={this.addFavorite}
+                    removeFavorite={this.removeFavorite}
+                    favorites={this.state.favorites.map((m) => m.title)}
                   />
                 );
               }}

@@ -15,7 +15,28 @@ export default class MovieElement extends Component {
         <div className="flex-fill d-flex flex-column p-3">
           <h5>{this.props.movie.title}</h5>
           <hr className="w-100" />
-          <p>{this.props.movie.details}</p>
+          <p className="flex-fill">{this.props.movie.details}</p>
+          <div className="d-flex flex-row justify-content-end">
+            {this.props.isFavorite ? (
+              <button
+                onClick={() => {
+                  this.props.removeFavorite(this.props.movie.title);
+                }}
+                className="btn btn-small btn-danger"
+              >
+                Remove
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  this.props.addFavorite(this.props.movie.title);
+                }}
+                className="btn btn-small btn-primary"
+              >
+                Add
+              </button>
+            )}
+          </div>
         </div>
       </div>
     );
