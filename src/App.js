@@ -6,7 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import apiMovie, { apiMovieMap } from "./conf/axios-conf";
+import apiMovie, { apiMovieMap } from "./conf/api.movies";
+import apiFirebase from "./conf/api.firebase";
 import { Header } from "./components";
 import Movies from "./features/movies";
 import Favorites from "./features/favorites";
@@ -20,7 +21,7 @@ class App extends Component {
       movies: null,
       selectedMovie: 0,
       isLoading: true,
-      favorites: [],
+      favorites: null,
     };
   }
 
@@ -33,6 +34,13 @@ class App extends Component {
         this.updateMovies(movies);
       })
       .catch((err) => console.log(err));
+    apiFirebase
+      .get("favorites.json")
+      .then((response) => {
+        let favorites = response.data ? response.data : [];
+        this.updateFavorites(favorites);
+      })
+      .catch();
   }
 
   updateSelectedMovie = (index) => {
@@ -42,7 +50,14 @@ class App extends Component {
   updateMovies = (movies) => {
     this.setState({
       movies,
-      isLoading: false,
+      isLoading: this.state.favorites ? false : true,
+    });
+  };
+
+  updateFavorites = (favorites) => {
+    this.setState({
+      favorites,
+      isLoading: this.state.movies ? false : true,
     });
   };
 
@@ -50,7 +65,9 @@ class App extends Component {
     const favorites = [...this.state.favorites];
     const film = this.state.movies.find((movie) => movie.title === title);
     favorites.push(film);
-    this.setState({ favorites });
+    this.setState({ favorites }, () => {
+      this.saveFavorites();
+    });
   };
 
   removeFavorite = (title) => {
@@ -59,7 +76,13 @@ class App extends Component {
       (movie) => movie.title === title
     );
     favorites.splice(index, 1);
-    this.setState({ favorites });
+    this.setState({ favorites }, () => {
+      this.saveFavorites();
+    });
+  };
+
+  saveFavorites = () => {
+    apiFirebase.put("favorites.json", this.state.favorites);
   };
 
   // render
@@ -82,7 +105,7 @@ class App extends Component {
                     movies={this.state.movies}
                     addFavorite={this.addFavorite}
                     removeFavorite={this.removeFavorite}
-                    favorites={this.state.favorites.map((m) => m.title)}
+                    favorites={this.state.favorites}
                   />
                 );
               }}
