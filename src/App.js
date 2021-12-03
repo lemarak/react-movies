@@ -116,6 +116,7 @@ class App extends Component {
                 return (
                   <Favorites
                     {...props}
+                    isLoading={this.isLoading}
                     favorites={this.state.favorites}
                     removeFavorite={this.removeFavorite}
                   />
